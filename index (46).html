@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tenmalexis — Outils Dofus</title>
+<meta name="description" content="Tous les outils Dofus de Tenmalexis : Almanax, Crafts, Familiers, Forgemagie, Quêtes répétables, Métiers.">
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=rajdhani:500,600,700|dm-sans:400,500,700|exo-2:400,500" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0c10;
+    --bg-elevated:#12151c;
+    --border:#20242e;
+    --gold:#f4b400;
+    --gold-dim:#8a6a10;
+    --text:#e8e9ed;
+    --text-dim:#8b909c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'DM Sans',sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  a{color:inherit;text-decoration:none;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+
+  header{
+    border-bottom:1px solid var(--border);
+    padding:20px clamp(20px,5vw,56px);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    position:sticky;
+    top:0;
+    background:rgba(10,12,16,0.92);
+    backdrop-filter:blur(8px);
+    z-index:10;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .brand-text{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:0;
+  }
+  .brand-text .name{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:2rem;
+    letter-spacing:0.02em;
+    line-height:1.1;
+  }
+  .brand-text .tagline{
+    font-family:'Exo 2',sans-serif;
+    font-weight:500;
+    font-size:1rem;
+    color:var(--gold);
+    letter-spacing:0.01em;
+    margin-top:-4px;
+  }
+  .mark-secondary{
+    width:40px;height:40px;
+    opacity:0.85;
+  }
+  .brand .mark{
+    width:52px;height:52px;
+    border:1.5px solid var(--gold);
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    padding:5px;
+  }
+  .brand .mark img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+  }
+  .brand .code{
+    color:var(--text-dim);
+    font-family:'Exo 2',sans-serif;
+    font-weight:400;
+    font-size:0.85rem;
+    margin-left:4px;
+  }
+  nav.social{display:flex;gap:10px;align-items:center;}
+  .social-item{
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+    padding:6px 16px 8px;
+    border-radius:14px;
+    transition:background .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .social-item:hover{transform:translateY(-1px);}
+  .social-item .platform-label{
+    font-family:'Exo 2',sans-serif;
+    font-size:0.6rem;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    opacity:0.75;
+  }
+  .social a{
+    display:flex;align-items:center;gap:6px;
+    font-family:'Exo 2',sans-serif;
+    font-size:0.85rem;
+    font-weight:600;
+  }
+  .social-item.youtube{
+    color:#ff5c5c;
+    background:rgba(255,59,59,0.10);
+    border:1px solid rgba(255,59,59,0.45);
+    box-shadow:0 0 12px rgba(255,59,59,0.18);
+  }
+  .social-item.youtube:hover{background:rgba(255,59,59,0.16); box-shadow:0 0 16px rgba(255,59,59,0.3);}
+  .social-item.twitch{
+    color:#b794ff;
+    background:rgba(145,70,255,0.12);
+    border:1px solid rgba(145,70,255,0.5);
+    box-shadow:0 0 12px rgba(145,70,255,0.22);
+  }
+  .social-item.twitch:hover{background:rgba(145,70,255,0.18); box-shadow:0 0 16px rgba(145,70,255,0.35);}
+  .social-item.ankama{
+    color:var(--gold);
+    background:rgba(244,180,0,0.10);
+    border:1px solid rgba(244,180,0,0.45);
+    box-shadow:0 0 12px rgba(244,180,0,0.18);
+    justify-content:center;
+    padding-top:12px;
+    padding-bottom:12px;
+  }
+  .social-item.ankama:hover{background:rgba(244,180,0,0.16); box-shadow:0 0 16px rgba(244,180,0,0.3);}
+  .social-item.tiktok{
+    color:#4dedea;
+    background:rgba(37,244,238,0.10);
+    border:1px solid rgba(37,244,238,0.45);
+    box-shadow:0 0 12px rgba(37,244,238,0.18);
+  }
+  .social-item.tiktok:hover{background:rgba(37,244,238,0.16); box-shadow:0 0 16px rgba(37,244,238,0.3);}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+
+  main{max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,72px) clamp(20px,5vw,56px) 80px;}
+
+  .hero{margin-bottom:clamp(40px,6vw,64px); text-align:center; display:flex; flex-direction:column; align-items:center;}
+  .eyebrow{
+    font-family:'Exo 2',sans-serif;
+    color:var(--gold);
+    font-size:1.35rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:clamp(2.1rem,5vw,3.4rem);
+    line-height:1.05;
+    letter-spacing:-0.01em;
+  }
+  h1 span{color:var(--gold);}
+  .hero p{
+    margin-top:16px;
+    color:var(--text-dim);
+    font-size:1.05rem;
+    max-width:56ch;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+  }
+  .card{
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:14px;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:var(--gold-dim); transform:translateY(-2px);}
+  .card-soon{
+    border-style:dashed;
+    cursor:default;
+  }
+  .card-soon:hover{transform:none;}
+  .card-soon .icon{color:#ffffff; border-style:dashed;}
+  .card .icon{
+    width:72px;height:72px;
+    border-radius:9px;
+    background:rgba(244,180,0,0.08);
+    border:1px solid var(--gold-dim);
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.1rem;
+  }
+  .card .icon.icon-img{
+    padding:6px;
+    overflow:hidden;
+  }
+  .card .icon.icon-img img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+  }
+  .card h2{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    font-size:1.25rem;
+  }
+  .card p{
+    color:var(--text-dim);
+    font-size:0.92rem;
+    flex-grow:1;
+  }
+  .card .go{
+    font-family:'Exo 2',sans-serif;
+    font-size:0.85rem;
+    font-weight:500;
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+  }
+  .card .go .arrow{transition:transform .15s ease;}
+  .card:hover .go .arrow{transform:translateX(3px);}
+
+  /* Tablette */
+  @media (max-width:900px){
+    .grid{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* Téléphone */
+  @media (max-width:560px){
+    header{padding:16px 18px; gap:10px;}
+    .brand .code{display:none;}
+    .social a{padding:7px 11px; font-size:0.8rem;}
+    main{padding:32px 18px 56px;}
+    .grid{grid-template-columns:1fr; gap:14px;}
+    .card{padding:20px;}
+    footer{flex-direction:column; text-align:center;}
+  }
+
+  footer{
+    border-top:1px solid var(--border);
+    padding:28px clamp(20px,5vw,56px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:var(--text);
+    font-family:'Exo 2',sans-serif;
+    font-size:0.85rem;
+  }
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="brand">
+    <div class="mark"><img src="https://api.dofusdb.fr/img/items/100056.png" alt=""></div>
+    <div class="brand-text">
+      <span class="name">Tenmalexis</span>
+      <span class="tagline">L'art de faire des kamas intelligemment</span>
+    </div>
+    <div class="mark mark-secondary"><img src="https://api.dofusdb.fr/img/items/148036.png" alt=""></div>
+  </div>
+  <nav class="social" aria-label="Réseaux">
+    <div class="social-item ankama">
+      <a href="https://store.ankama.com/fr?code=TENMA" target="_blank" rel="noopener">
+        Code Créateur TENMA
+      </a>
+    </div>
+    <div class="social-item youtube">
+      <span class="platform-label">YouTube</span>
+      <a href="https://www.youtube.com/@Tenmalexis" target="_blank" rel="noopener">
+        ▶ @Tenmalexis
+      </a>
+    </div>
+    <div class="social-item twitch">
+      <span class="platform-label">Twitch</span>
+      <a href="https://www.twitch.tv/tenmalexis" target="_blank" rel="noopener">
+        ▶ @tenmalexis
+      </a>
+    </div>
+    <div class="social-item tiktok">
+      <span class="platform-label">TikTok</span>
+      <a href="https://www.tiktok.com/@tenmalexis" target="_blank" rel="noopener">
+        ♪ @tenmalexis
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="eyebrow">Boîte à outils Dofus</div>
+    <h1>Tous mes outils, <span>au même endroit.</span></h1>
+    <p>9 outils que j'ai codés pour gagner du temps sur Dofus : plus besoin de faire tes calculs à la main ou de noter tes quêtes sur un bloc-notes à côté. Tout est gratuit, tout est mis à jour régulièrement.</p>
+  </div>
+
+  <div class="grid">
+
+    <a class="card" href="https://tenmalexis.github.io/almanax-tool/Tenmalexis_Almanax_Tool.html" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://api.dofusdb.fr/img/items/23018.png" alt="" loading="lazy"></div>
+      <h2>Almanax</h2>
+      <p>Bonus du jour, filtres et export CSV pour ne jamais rater l'Almanax.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <a class="card" href="https://tenmalexis.github.io/Calculateur-Craft-Dofus/" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://api.dofusdb.fr/img/items/16349.png" alt="" loading="lazy"></div>
+      <h2>Crafts</h2>
+      <p>Calcule le coût de revient d'un craft et compare-le au prix HDV pour savoir s'il est rentable.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <a class="card" href="https://tenmalexis.github.io/sorts-cast-kta/encyclopedie-sorts.html" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://api.dofusdb.fr/img/spells/sort_11851.png" alt="" loading="lazy"></div>
+      <h2>Encyclopédie des sorts</h2>
+      <p>Sélectionne une ou plusieurs classes et affiche leurs sorts en direct : variantes, PA/PM/PO et description.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <a class="card" href="https://tenmalexis.github.io/xp-familier/" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://api.dofusdb.fr/img/items/18091.png" alt="" loading="lazy"></div>
+      <h2>Familiers</h2>
+      <p>Suis la progression XP de tes familiers et planifie leur montée en niveau.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <a class="card" href="https://tenmalexis.github.io/forgemagie-optimizer/" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://api.dofusdb.fr/img/items/78055.png" alt="" loading="lazy"></div>
+      <h2>Forgemagie</h2>
+      <p>Optimise tes runes et tes passes de forgemagie pour atteindre tes stats cibles.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <a class="card" href="https://tenmalexis.github.io/pack-metiers/" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://guidactik.com/wp-content/uploads/2025/05/mineur_dofus3.jpg" alt="" loading="lazy"></div>
+      <h2>Métiers</h2>
+      <p>Pack d'outils pour suivre et planifier la montée de tes métiers.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <a class="card" href="https://tenmalexis.github.io/quetes-repetables/" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://api.dofusdb.fr/img/items/16410.png" alt="" loading="lazy"></div>
+      <h2>Quêtes répétables</h2>
+      <p>Tracker des quêtes répétables toutes zones, avec suivi de progression.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <a class="card" href="https://tenmalexis.github.io/quetes-repetables-frigost/" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://api.dofusdb.fr/img/items/30007.png" alt="" loading="lazy"></div>
+      <h2>Quêtes répétables Frigost</h2>
+      <p>Le même tracker, dédié aux quêtes répétables de la zone Frigost.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <a class="card" href="https://tenmalexis.github.io/ventes-global/" target="_blank" rel="noopener">
+      <div class="icon icon-img"><img src="https://api.dofusdb.fr/img/items/20003.png" alt="" loading="lazy"></div>
+      <h2>Ventes HDV</h2>
+      <p>Classement HDV par catégorie sur 30 jours (Dofus / Prysmaradite / Familiers / Montiliers / Runes / Équipements) par volumes de vente.</p>
+      <span class="go">Ouvrir l'outil <span class="arrow">→</span></span>
+    </a>
+
+    <div class="card card-soon">
+      <div class="icon">?</div>
+      <h2>Work in progress</h2>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <span class="disclaimer">Certaines illustrations sont la propriété d'Ankama Studio et de Dofus - Tous droits réservés.</span>
+</footer>
+
+<script data-goatcounter="https://tenmalexis.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
